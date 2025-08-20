@@ -1,6 +1,9 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Zap, Sun, Gift, Star, CheckCircle, Scissors, Coffee, Smartphone, Menu, X, MessageCircle } from "lucide-react";
+import {
+  ArrowRight, Zap, Sun, Gift, Star, CheckCircle, Scissors, Coffee,
+  Smartphone, Menu, X, MessageCircle, ShoppingCart, Shirt, Pill, Download
+} from "lucide-react";
 import CountUp from "react-countup";
 import ContactForm from "./contact";
 import image from "./assets/image.png";
@@ -40,7 +43,8 @@ function Navbar() {
   const navLinks = [
     { title: "Home", href: "#home" },
     { title: "Features", href: "#features" },
-    { title: "Industries", href: "#industries" },
+    // UPDATE: Changed "Industries" to "Services" to match the new section
+    { title: "Services", href: "#services" },
     { title: "Pricing", href: "#pricing" },
     { title: "Contact", href: "#contact" },
   ];
@@ -64,8 +68,8 @@ function Navbar() {
             </motion.div>
             <motion.div
               className="text-3xl font-extrabold tracking-tight 
-              bg-gradient-to-r from-blue-500 via-sky-400 to-indigo-600 
-              bg-clip-text text-transparent bg-[length:200%_200%] animate-gradient"
+               bg-gradient-to-r from-blue-500 via-sky-400 to-indigo-600 
+               bg-clip-text text-transparent bg-[length:200%_200%] animate-gradient"
             >
               Bilnix
             </motion.div>
@@ -92,14 +96,7 @@ function Navbar() {
               </motion.a>
             ))}
           </nav>
-          <div className="hidden md:flex items-center gap-3">
-            <AnimatedButton className="px-4 py-2 rounded-lg text-blue-600 border border-blue-100 bg-white hover:bg-blue-50 transition">
-              Sign in
-            </AnimatedButton>
-            <AnimatedButton className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2 transition">
-              Try Free <ArrowRight className="w-4 h-4" />
-            </AnimatedButton>
-          </div>
+          
           <AnimatedButton onClick={() => setMenuOpen(true)} className="md:hidden px-3 py-2 rounded-lg border bg-white shadow">
             <Menu className="w-5 h-5" />
           </AnimatedButton>
@@ -236,7 +233,7 @@ function Hero() {
 function PosterCard({ title, subtitle, tag, color = "blue" }) {
   const colorMap = {
     blue: { bg: "from-blue-500 to-blue-400", text: "text-white", glow: "shadow-[0_0_8px_#2563eb]" },       
-    sky: { bg: "from-sky-400 to-sky-300", text: "text-white" , glow: "shadow-[0_0_8px_#2563eb]"},      
+    sky: { bg: "from-sky-400 to-sky-300", text: "text-white" , glow: "shadow-[0_0_8px_#2563eb]"},       
     indigo: { bg: "from-indigo-500 to-sky-400", text: "text-white", glow: "shadow-[0_0_8px_#2563eb]"}, // "Pro"
   }[color];
 
@@ -317,97 +314,119 @@ function FeaturesGrid() {
   );
 }
 
-function IndustryCard({ icon: Icon, title, description, bullets }) {
+// ==============================================================================
+// === NEW COMPONENT: ServicesSection (Replaces IndustriesSection) =============
+// ==============================================================================
+
+const servicesData = [
+  {
+    icon: Scissors,
+    title: "Salon Billing & Analytics",
+    description: "Complete salon management solution with appointment scheduling, staff performance tracking, inventory management, and detailed analytics.",
+    keyFeatures: ["Appointment Scheduling & Management", "Staff Performance Analytics", "Inventory & Product Tracking"],
+  },
+  {
+    icon: Coffee,
+    title: "Café & Restaurant Billing",
+    description: "Streamline your food service operations with table management, order tracking, menu analytics, and comprehensive sales reporting.",
+    keyFeatures: ["Table Management & Reservations", "Order Tracking & Kitchen Display", "Menu Analytics & Popular Items"],
+  },
+  {
+    icon: Smartphone,
+    title: "Mobile Shop POS & Reports",
+    description: "Complete mobile store management with inventory tracking, sales reports, customer management, and warranty tracking.",
+    keyFeatures: ["Multi-brand Inventory Management", "Sales Analytics & Reports", "Warranty & Service Tracking"],
+  },
+  {
+    icon: ShoppingCart,
+    title: "Kirana Store Management",
+    description: "Complete grocery store management with barcode scanning, inventory control, supplier management, and expiry tracking.",
+    keyFeatures: ["Barcode Scanning & Inventory", "Supplier Management", "GST & Tax Calculation"],
+  },
+  {
+    icon: Shirt,
+    title: "Boutique & Fashion Retail",
+    description: "Fashion retail management with size tracking, seasonal inventory analysis, customer preferences, and trend reporting.",
+    keyFeatures: ["Size & Variant Management", "Seasonal Inventory Planning", "Customer Style Preferences"],
+  },
+  {
+    icon: Pill,
+    title: "Medical Store & Pharmacy",
+    description: "Pharmacy management with expiry tracking, prescription handling, drug interaction alerts, and regulatory compliance.",
+    keyFeatures: ["Prescription Management", "Expiry Date Alerts", "Drug Interaction Warnings"],
+  },
+];
+
+function ServiceCard({ icon: Icon, title, description, keyFeatures }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.5 }}
-      transition={{ duration: 0.5 }}
-      className="bg-white rounded-2xl border border-blue-100 shadow-lg overflow-hidden group"
+      variants={{
+        hidden: { opacity: 0, y: 30 },
+        visible: { opacity: 1, y: 0, transition: { type: "spring" } }
+      }}
+      whileHover={{ y: -10, scale: 1.03, boxShadow: "0 20px 40px -10px rgba(59, 130, 246, 0.3)" }}
+      className="bg-white rounded-2xl border border-blue-100 shadow-lg overflow-hidden flex flex-col h-full"
     >
-      <div className="p-8">
-        <div className="flex items-center gap-4">
-          <div className="w-14 h-14 bg-blue-100 rounded-xl grid place-items-center">
+      <div className="p-8 flex-grow">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="w-14 h-14 bg-blue-100 rounded-xl grid place-items-center flex-shrink-0">
             <Icon className="w-7 h-7 text-blue-600" />
           </div>
           <h3 className="text-xl font-bold text-blue-800">{title}</h3>
         </div>
-        <p className="mt-4 text-blue-700 leading-relaxed">{description}</p>
-        <ul className="mt-6 space-y-3 text-blue-700">
-          {bullets.map((bullet) => (
-            <li key={bullet} className="flex items-center gap-3">
-              <CheckCircle className="w-5 h-5 text-blue-500" />
-              <span>{bullet}</span>
+        <p className="text-blue-700 leading-relaxed mb-6">{description}</p>
+        <h4 className="font-semibold text-blue-800 mb-3">Key Features:</h4>
+        <ul className="space-y-3 text-blue-700">
+          {keyFeatures.map((feature) => (
+            <li key={feature} className="flex items-start gap-3">
+              <CheckCircle className="w-5 h-5 text-blue-500 mt-1 flex-shrink-0" />
+              <span>{feature}</span>
             </li>
           ))}
         </ul>
       </div>
+      <div className="p-6 bg-blue-50/50 mt-auto flex items-center justify-around gap-4 border-t">
+          {/* UPDATED: Changed button to an anchor tag linking to #pricing */}
+          <a href="#pricing" className="flex items-center gap-2 font-semibold text-blue-600 hover:text-blue-800 transition-colors">
+              <Download className="w-5 h-5" /> Mobile PWA
+          </a>
+          {/* UPDATED: Changed button to an anchor tag linking to #pricing */}
+          <a href="#pricing" className="flex items-center gap-2 font-semibold text-blue-600 hover:text-blue-800 transition-colors">
+              <Download className="w-5 h-5" /> Windows EXE
+          </a>
+      </div>
     </motion.div>
   );
 }
-
-function IndustriesSection() {
-  const industries = [
-    {
-      icon: Scissors,
-      title: "Salon Billing & Analytics",
-      description:
-        "Complete salon management with appointment scheduling, service tracking, and detailed performance analytics.",
-      bullets: ["Appointment Management", "Staff Performance", "Inventory Tracking"],
-    },
-    {
-      icon: Coffee,
-      title: "Café & Restaurant Billing",
-      description:
-        "Streamline your food service operations with table management, order tracking, and comprehensive sales analysis.",
-      bullets: ["Table Management", "Order Tracking", "Menu Analytics"],
-    },
-    {
-      icon: Smartphone,
-      title: "Mobile Shop POS & Reports",
-      description:
-        "Complete mobile store management with inventory tracking, sales reports, and customer management.",
-      bullets: ["Inventory Management", "Sales Analytics", "Customer Database"],
-    },
-  ];
-
-  // Animation container (stagger children)
+function ServicesSection() {
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.25 },
-    },
-  };
-
-  // Individual card animation
-  const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
   };
 
   return (
-    <section id="industries" className="py-20 bg-blue-50">
+    <section id="services" className="py-20 bg-blue-50">
       <Container>
-        <SectionTitle>Built for Your Business</SectionTitle>
+        <SectionTitle>Solutions Tailored for Your Business</SectionTitle>
+        <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="mt-4 text-lg text-blue-700 max-w-3xl mx-auto text-center"
+        >
+            Industry-specific billing and analytics solutions designed to meet your unique needs and drive growth.
+        </motion.p>
 
-        {/* Animated Grid */}
         <motion.div
-          className="mt-12 grid md:grid-cols-3 gap-8"
+          className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-8"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.2 }}
         >
-          {industries.map((industry, i) => (
-            <motion.div key={i} variants={cardVariants}>
-              <IndustryCard {...industry} />
-            </motion.div>
+          {servicesData.map((service, i) => (
+            <ServiceCard key={i} {...service} />
           ))}
         </motion.div>
       </Container>
@@ -423,37 +442,42 @@ function Steps() {
   ];
 
   return (
-    <section className="py-16 bg-white">
-      <Container>
-        <div className="text-center mb-12">
-          <h3 className="text-2xl font-bold text-blue-800">How it works</h3>
-          <p className="text-blue-700">Get up and running in three easy steps</p>
+<section className="py-16 bg-white">
+  <Container>
+    {/* Platform Selection */}
+    <div className="mt-20 text-center">
+      <h3 className="text-2xl md:text-3xl font-bold text-blue-800 mb-6">
+        Choose your preferred platform and start managing your business efficiently
+      </h3>
+      <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        {/* PWA */}
+        <div className="p-8 bg-blue-50 rounded-2xl shadow-lg hover:shadow-xl transition">
+          <h4 className="text-xl font-semibold text-blue-700 mb-2">PWA Version</h4>
+          <p className="text-blue-600 mb-4">Access from any browser</p>
+          <a
+            href="#pricing" // UPDATED: Changed href to redirect to pricing
+            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition"
+          >
+            Install PWA
+          </a>
         </div>
-        <div className="relative">
-          <div className="absolute left-1/2 top-4 bottom-4 w-0.5 bg-blue-200 hidden md:block" />
-          <div className="grid md:grid-cols-1 gap-12">
-            {steps.map((s, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.2 }}
-                className={`relative flex items-center ${i % 2 === 0 ? "md:flex-row-reverse" : "md:flex-row"}`}
-              >
-                <div className={`md:w-1/2 p-6 bg-white rounded-lg shadow-lg ${i % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
-                  <h4 className="font-semibold mb-2 text-blue-800">{s.title}</h4>
-                  <p className="text-blue-700">{s.desc}</p>
-                </div>
-                <div className="absolute left-1/2 -translate-x-1/2 w-8 h-8 bg-blue-600 rounded-full text-white flex items-center justify-center font-bold">
-                  {i + 1}
-                </div>
-              </motion.div>
-            ))}
-          </div>
+        {/* EXE */}
+        <div className="p-8 bg-blue-50 rounded-2xl shadow-lg hover:shadow-xl transition">
+          <h4 className="text-xl font-semibold text-blue-700 mb-2">Windows EXE</h4>
+          <p className="text-blue-600 mb-4">Desktop application</p>
+          <a
+            href="#pricing" // UPDATED: Changed href to redirect to pricing
+            // REMOVED: the "download" attribute
+            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition"
+          >
+            Download EXE
+          </a>
         </div>
-      </Container>
-    </section>
+      </div>
+    </div>
+  </Container>
+</section>
+
   );
 }
 
@@ -572,18 +596,18 @@ function Pricing() {
                 ))}
               </ul>
               <button
-              onClick={() => {
-                const contactSection = document.getElementById("contact");
-                if (contactSection) {
-                  contactSection.scrollIntoView({ behavior: "smooth" });
-                }
-              }}
-              className={`mt-6 w-full py-3 rounded-lg font-semibold transition-transform hover:scale-105 cursor-pointer ${
-                p.highlight ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-700"
-              }`}
-            >
-              Choose Plan
-            </button>
+                onClick={() => {
+                  const contactSection = document.getElementById("contact");
+                  if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+                className={`mt-6 w-full py-3 rounded-lg font-semibold transition-transform hover:scale-105 cursor-pointer ${
+                  p.highlight ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-700"
+                }`}
+              >
+                Choose Plan
+              </button>
 
             </motion.div>
           ))}
@@ -647,30 +671,6 @@ function AboutStats() {
 function CTA() {
   return (
     <section id="get-started" className="py-20 bg-white">
-      <Container className="max-w-xl mx-auto text-center p-10 rounded-3xl shadow-lg border border-gray-200">
-        <h3 className="text-4xl font-extrabold mb-6 text-gray-900 drop-shadow-sm">
-          Transform your business - <span className="text-indigo-600">get started the smart way</span>
-        </h3>
-        <div className="mt-6 text-lg font-semibold tracking-wide text-gray-700">
-          <ul className="space-y-5 text-left">
-            {[
-              "Instant onboarding with live help from support",
-              "Start with free CRM, billing & analytics tools",
-              "Access to AI-powered business suggestions",
-              "Trusted by 500+ SMBs across 15+ industries",
-              "Cancel or export your data anytime."
-            ].map((item, i) => (
-              <li key={i} className="flex items-center gap-3">
-                <span className="text-indigo-600 font-bold text-xl animate-pulse">✓</span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="text-2xl mt-12 font-bold text-gray-900">
-            Ready to transform? <span className="text-indigo-600">Contact us today ⇩</span>
-          </div>
-        </div>
-      </Container>
     </section>
   );
 }
@@ -691,7 +691,7 @@ function Footer() {
           <ul className="space-y-2 text-sm">
             <li><a href="#home" className="hover:text-white">Home</a></li>
             <li><a href="#features" className="hover:text-white">Features</a></li>
-            <li><a href="#industries" className="hover:text-white">Industries</a></li>
+            <li><a href="#services" className="hover:text-white">Services</a></li>
             <li><a href="#pricing" className="hover:text-white">Pricing</a></li>
             <li><a href="#contact" className="hover:text-white">Contact</a></li>
           </ul>
@@ -724,7 +724,7 @@ function FloatingWhatsAppButton() {
   const [isHovered, setIsHovered] = useState(false);
 
   // IMPORTANT: Replace this with your actual WhatsApp number
-  const phoneNumber = "919876543210";
+  const phoneNumber = "919322880059"; // Using one of your numbers from the footer
   const message = "Hello! I'm interested in Bilnix and would like to know more.";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
@@ -793,16 +793,17 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
-         <AboutStats />
+        <AboutStats />
         <FeaturesGrid />
-        <IndustriesSection />
+        {/* UPDATE: Replaced the old IndustriesSection with the new, complete ServicesSection */}
+        <ServicesSection />
         <Steps />
         <Testimonials />
         <Pricing />
         <CTA />
         <ContactForm />
-        <Footer />
       </main>
+      <Footer />
       <FloatingWhatsAppButton />
     </div>
   );
