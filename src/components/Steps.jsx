@@ -1,5 +1,4 @@
 import React from 'react';
-import { HashLink } from 'react-router-hash-link';
 import { Container } from './shared/Container';
 import { SectionTitle } from './shared/SectionTitle';
 import { motion } from 'framer-motion';
@@ -26,26 +25,26 @@ export default function Steps() {
             <h4 className="text-2xl font-bold text-slate-800 mb-2">PWA Version</h4>
             <p className="text-slate-500 mb-6">Access from any browser</p>
             <Link 
-                to="/contact" 
-                className="..."
-                >
-                Install PWA
-                </Link>
-                        </div>
+              to="/contact" 
+              className="inline-block px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-transform hover:scale-105"
+            >
+              Install PWA
+            </Link>
+          </div>
 
-            {/* EXE Card */}
-            <div className="p-10 bg-white rounded-2xl shadow-lg border hover:shadow-xl hover:border-blue-300 transition-all duration-300">
-                <h4 className="text-2xl font-bold text-slate-800 mb-2">Windows EXE</h4>
-                <p className="text-slate-500 mb-6">Desktop application</p>
-                <Link 
-                to="/contact" 
-                className="..."
-                >
-                Download EXE
-                    </Link>
-                    </div>
-                    </motion.div>
-                </Container>
-                </section>
-            );
-            }
+          {/* EXE Card */}
+          <div className="p-10 bg-white rounded-2xl shadow-lg border hover:shadow-xl hover:border-blue-300 transition-all duration-300">
+            <h4 className="text-2xl font-bold text-slate-800 mb-2">Windows EXE</h4>
+            <p className="text-slate-500 mb-6">Desktop application</p>
+            <Link 
+              to="/contact" 
+              className="inline-block px-8 py-3 bg-slate-700 text-white rounded-lg font-semibold hover:bg-slate-800 transition-transform hover:scale-105"
+            >
+              Download EXE
+            </Link>
+          </div>
+        </motion.div>
+      </Container>
+    </section>
+  );
+}
